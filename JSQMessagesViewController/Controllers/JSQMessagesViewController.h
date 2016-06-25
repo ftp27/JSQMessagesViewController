@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
                                                          JSQMessagesCollectionViewDelegateFlowLayout,
                                                          UITextViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIView *placeholderView;
+
 /**
  *  Returns the collection view object managed by this view controller.
  *  This view controller is the collection view's data source and delegate.
@@ -302,6 +304,11 @@ NS_ASSUME_NONNULL_BEGIN
  @param notification The posted notification.
  */
 - (void)didReceiveMenuWillHideNotification:(NSNotification *)notification;
+
+
+- (void)setPlaceholder:(UIView * _Nullable)placeholder;
+- (void)hidePlaceholder;
+- (void)showPlaceholder;
 
 @end
 

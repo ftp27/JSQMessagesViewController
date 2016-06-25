@@ -119,9 +119,12 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
 
 @property (weak, nonatomic) IBOutlet JSQMessagesCollectionView *collectionView;
 @property (strong, nonatomic) IBOutlet JSQMessagesInputToolbar *inputToolbar;
+@property (weak, nonatomic) IBOutlet UIView *placeholder;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarHeightConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *toolbarBottomLayoutGuide;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *placeholderBottom;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *placeholderTop;
 
 @property (strong, nonatomic) NSIndexPath *selectedIndexPathForMenu;
 
@@ -933,8 +936,39 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
                      animations:^{
                          [self jsq_setCollectionViewInsetsTopValue:self.collectionView.contentInset.top
                                                        bottomValue:CGRectGetHeight(keyboardEndFrame)];
+                         //TODO: Change to placeholder to UIScrollView
+                         self.placeholderBottom.constant = CGRectGetHeight(keyboardEndFrame);
+                         self.placeholderTop.constant = self.collectionView.contentInset.top;
                      }
                      completion:nil];
+}
+
+-(void)setPlaceholder:(UIView *)placeholder {
+    for (UIView *subview in [self.placeholderView subviews]) {
+        [subview removeFromSuperview];
+    }
+    [self.placeholderView addSubview:placeholder];
+    //[placeholder removeConstraints:placeholder.constraints];
+    placeholder.translatesAutoresizingMaskIntoConstraints = false;
+    NSDictionary *views = @{@"view":placeholder};
+    
+    [self.placeholderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[view]|"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:views]];
+    [self.placeholderView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[view]|"
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:views]];
+    //[self.placeholder layoutIfNeeded];
+}
+
+-(void)hidePlaceholder {
+    [self.placeholder setHidden:YES];
+}
+
+-(void)showPlaceholder {
+    [self.placeholder setHidden:NO];
 }
 
 @end
