@@ -960,15 +960,26 @@ static void JSQInstallWorkaroundForSheetPresentationIssue26295020(void) {
                                                                                  options:0
                                                                                  metrics:nil
                                                                                    views:views]];
-    //[self.placeholder layoutIfNeeded];
 }
 
 -(void)hidePlaceholder {
-    [self.placeholder setHidden:YES];
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+                        options:UIViewAnimationOptionLayoutSubviews
+                     animations:^{
+                         [self.placeholderView setHidden:YES];
+                     }
+                     completion:nil];
 }
 
 -(void)showPlaceholder {
-    [self.placeholder setHidden:NO];
+    [UIView animateWithDuration:1.0
+                          delay:0.0
+                        options:UIViewAnimationOptionLayoutSubviews
+                     animations:^{
+                         [self.placeholderView setHidden:NO];
+                     }
+                     completion:nil];
 }
 
 @end
